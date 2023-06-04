@@ -1,39 +1,39 @@
 const fetch = require('node-fetch');
 
-const data = Buffer.from('o5qZhdv+W8OOagAAOYoCQ7weDKfwDFBAQFAM8KcMHrw=', 'base64')
+const data = Buffer.from('OIdYirCeqdNc6gAAYb2jQ8c827AGeRJAQBJ5BrDbPMc=', 'base64')
 
-function readBytes(slice, bigEndian) {
-  const byteArray = [...Int32Array.from(slice)].filter(Boolean).map((int) => {
+function readBytes(slice, bigEndian = true) {
+  const byteArray = [...Int32Array.from(slice)].map((int) => {
     const foo = int.toString(2).padStart(8, '0')
     console.log('foo', foo);
     return foo
   })
 
-  if (!bigEndian) {
-    return byteArray.join('')
+  if (bigEndian) {
+    return byteArray.reverse().join('')
   }
 
-  return byteArray.reverse().join('')
+  return byteArray.join('')
 }
 
 // 32 total array entries
-const signed = readBytes(data.slice(0, 4), true)
+const signed = readBytes(data.slice(0, 4))
 console.log('signed', signed);
-const int = parseInt(signed, 2);
+const int = parseInt(signed, 2) | 0;
 console.log('dec', int);
 
 // signed: 1295053963
 
-const unsigned = readBytes(data.slice(4, 8), true)
+const unsigned = readBytes(data.slice(4, 8))
 console.log('unsigned', unsigned);
 const uint = parseInt(unsigned, 2) >>> 0;
 console.log('dec', uint);
 
 // unsigned: 154963415
 
-const shortBytes = readBytes(data.slice(8, 12), true)
+const shortBytes = readBytes(data.slice(8, 12))
 console.log('shortBytes', shortBytes);
-const short = parseInt(shortBytes, 2);
+const short = (parseInt(shortBytes, 2) << 16) >> 16;
 console.log('dec', short);
 
 // short: 11398
@@ -46,29 +46,59 @@ for (let i = 0; i < bytes.length; i++) {
 }
 console.log('buffer', buffer);
 const view = new DataView(buffer);
-// const float = readBytes(data.slice(12, 16))
-const float = view.getFloat32(0, false)
+const float = view.getFloat32(0, true)
 console.log('float', float);
-console.log('dec', parseInt(float, 2));
 
 // float:
 
-const doubleBytes = readBytes(data.slice(16, 24))
-console.log('doubleBytes', doubleBytes);
-const double = BigInt(`0b${doubleBytes}`);
-console.log('dec', double);
+const doubleBytes = data.slice(16, 24)
+const buf = new ArrayBuffer(8);
+const dView = new DataView(buf);
+
+doubleBytes.forEach((b, i) => {
+  dView.setUint8(i, b)
+})
+
+const double = dView.getFloat64(0, true)
+console.log('double', double);
+
+
+// console.log('doubleBytes', doubleBytes);
+// const doubleByteArray = new Uint16Array(doubleBytes)
+// const doubleView = new DataView(doubleByteArray.buffer, 0);
+// for (let i = 0; i < doubleBytes.length; i++) {
+//   console.log('doubleBytes[i]', doubleBytes[i]);
+//   doubleView.setInt16(i, doubleBytes[i], true)
+// }
+// console.log('doubleByteArray', doubleByteArray);
+// console.log('doubleBuffer', doubleByteArray.buffer);
+// console.log('doubleView', doubleView);
+// const double = doubleView.getFloat64(0, true)
+// console.log('double', double);
+
+// const doubleBytes = readBytes(data.slice(16, 24))
+// console.log('doubleBytes', doubleBytes);
+// const doubleBig = BigInt(`0b${doubleBytes}`);
+// const doubleArr = new Float64Array(1)
+// doubleArr[0] = doubleBytes;
+// const double = doubleArr[0]
+// console.log('dec', double);
 
 // double: 4913111324006377280n
 
-const doubleBigEndian = readBytes(data.slice(24, 32), true)
-console.log('doubleBigEndian', doubleBigEndian);
-const double_big_endian = BigInt(`0b${doubleBigEndian}`);
-console.log('dec', double_big_endian);
+const bedBytes = data.slice(24, 32)
+const bedBuf = new ArrayBuffer(8)
+const bedView = new DataView(bedBuf);
 
-// doubleBigEndian: 4913111324006377280n
-const json = {
-  int, uint, short, float, double: double.toString(), double_big_endian: double_big_endian.toString()
-}
+bedBytes.forEach((b, i) => {
+  bedView.setUint8(i, b)
+})
+
+const big_endian_double = dView.getFloat64(0, true)
+console.log('big_endian_double', big_endian_double);
+
+// bigEndianDouble: 4913111324006377280n
+const json = { int, uint, short, float, double, big_endian_double }
 console.log('json', JSON.stringify(json));
 
 fetch('https://hackattic.com/challenges/help_me_unpack/solve?access_token=b4d135b7935286bf', {method: 'POST', body: JSON.stringify(json)}).then((res) => {
