@@ -4,11 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "backup-restore": "dotenv node ./backup_restore"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "node-fetch": "^2"
+    "dotenv-cli": "^7.2.1",
+    "node-fetch": "^2",
+    "pg": "^8.11.0"
+  },
+  "devDependencies": {
+    "prettier": "^2.8.8"
   }
 }
