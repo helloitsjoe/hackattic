@@ -6,7 +6,8 @@
   "scripts": {
     "test": "jest",
     "backup-restore": "dotenv node ./backup-restore",
-    "reading-qr": "dotenv node ./reading-qr"
+    "reading-qr": "dotenv node ./reading-qr",
+    "mini-miner": "dotenv node ./mini-miner"
   },
   "author": "",
   "license": "ISC",
