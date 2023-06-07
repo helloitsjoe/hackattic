@@ -1,11 +1,8 @@
-const { get, post, BASE_URL } = require('./utils');
 const { createHash } = require('crypto');
 
 const HEX_BITS = 4;
 
-(async () => {
-  const { difficulty, block } = await get('mini_miner');
-
+module.exports = ({ difficulty, block }) => {
   console.log('block', block);
 
   let nonce = null;
@@ -30,5 +27,5 @@ const HEX_BITS = 4;
     return;
   }
 
-  post('mini_miner', JSON.stringify({ nonce }), true).then(console.log);
-})();
+  return JSON.stringify({ nonce });
+};
