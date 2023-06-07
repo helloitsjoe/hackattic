@@ -1,25 +1,19 @@
-const { fetch, BASE_URL } = require('./utils');
+const { get, post, BASE_URL } = require('./utils');
 const { createHash } = require('crypto');
-
-const query = `access_token=${process.env.ACCESS_TOKEN}`;
-
-const getUrl = `${BASE_URL}/mini_miner/problem?${query}`;
-const postUrl = `${BASE_URL}/mini_miner/solve?${query}&playground=true`;
 
 const HEX_BITS = 4;
 
 (async () => {
-  const { difficulty, block } = await fetch(getUrl);
+  const { difficulty, block } = await get('mini_miner');
 
   console.log('block', block);
 
   let nonce = null;
 
-  for (let i = 0; i < 10000; i++) {
+  for (let i = 0; i < 1_000_000; i++) {
     const { data } = block;
 
     const newBlock = JSON.stringify({ data, nonce: i });
-    // console.log('block', block);
     const hash = createHash('sha256').update(newBlock).digest('hex');
 
     const initialZeros = '0'.repeat(Math.ceil(difficulty / HEX_BITS));
@@ -36,7 +30,5 @@ const HEX_BITS = 4;
     return;
   }
 
-  fetch(postUrl, { method: 'POST', body: JSON.stringify({ nonce }) }).then(
-    console.log
-  );
+  post('mini_miner', JSON.stringify({ nonce }), true).then(console.log);
 })();
