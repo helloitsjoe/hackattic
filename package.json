@@ -17,7 +17,8 @@
     "jimp": "^0.22.8",
     "node-fetch": "^2",
     "pg": "^8.11.0",
-    "qrcode-reader": "^1.0.4"
+    "qrcode-reader": "^1.0.4",
+    "ws": "^8.13.0"
   },
   "devDependencies": {
     "prettier": "^2.8.8"
