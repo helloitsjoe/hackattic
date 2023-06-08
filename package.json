@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "node --test",
     "dev": "dotenv node .",
     "backup-restore": "dotenv node ./backup-restore",
     "reading-qr": "dotenv node ./reading-qr",

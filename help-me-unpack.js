@@ -6,7 +6,7 @@ function readBytes(slice) {
     return byte;
   });
 
-  return byteArray.join('');
+  return byteArray.reverse().join('');
 }
 
 module.exports = ({ bytes }) => {
