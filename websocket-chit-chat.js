@@ -1,12 +1,14 @@
 const WebSocket = require('ws');
 
+const WINDOW = 200;
+
 function computeInterval(diff) {
   const intervals = [700, 1500, 2000, 2500, 3000];
   for (const interval of intervals) {
-    if (diff - interval < 200 && diff - interval > 0) {
+    if (diff - interval < WINDOW && diff - interval > 0) {
       return interval;
     }
-    if (interval - diff < 200 && interval - diff > 0) {
+    if (interval - diff < WINDOW && interval - diff > 0) {
       return interval;
     }
   }
