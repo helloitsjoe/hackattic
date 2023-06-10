@@ -5,10 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "node --test",
-    "dev": "dotenv node .",
-    "backup-restore": "dotenv node ./backup-restore",
-    "reading-qr": "dotenv node ./reading-qr",
-    "mini-miner": "dotenv node ./mini-miner"
+    "dev": "dotenv node ."
   },
   "author": "",
   "license": "ISC",
