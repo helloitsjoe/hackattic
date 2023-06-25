@@ -27,4 +27,4 @@ const post = (challenge, body, playground = false) => {
   });
 };
 
-module.exports = { get, post, BASE_URL };
+module.exports = { get, post, fetch };
