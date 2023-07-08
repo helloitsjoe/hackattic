@@ -8,20 +8,21 @@ module.exports = async ({ wav_url }) => {
   const arrayBuf = await blob.arrayBuffer();
 
   const result = wav.decode(arrayBuf);
+  console.log('result', result);
   const input = result.channelData[0];
-  const { length } = input.length;
+  const { length } = input;
 
   console.log('result', length);
 
-  const f = new FFT(4096);
+  // const f = new FFT(4096);
   // const input = new Array(length).fill(0);
-  const out = f.createComplexArray();
+  // const out = f.createComplexArray();
 
   // const realInput = new Array(f.size);
-  f.realTransform(out, input);
+  // f.realTransform(out, input);
 
-  console.log('out', out);
-  console.log('input', input);
+  // console.log('out', out);
+  // console.log('input', input);
 
   return { sequence: '1' };
 };
