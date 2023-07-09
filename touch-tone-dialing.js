@@ -37,11 +37,11 @@ function getChunks(buf) {
     }
   }
 
-  // console.log('chunks.length', chunks.length);
-  // console.log(
-  //   'chunks',
-  //   chunks.map((c) => [c[0], c[c.length - 1]])
-  // );
+  console.log('chunks.length', chunks.length);
+  console.log(
+    'chunks',
+    chunks.map((c) => [c[0], c[c.length - 1]])
+  );
 
   return chunks;
 }
@@ -56,7 +56,7 @@ module.exports = async ({ wav_url }) => {
     return acc;
   }, new Map());
 
-  console.log('toneMap', toneMap);
+  // console.log('toneMap', toneMap);
 
   // console.log('wav_url', wav_url);
   const res = await fetch(wav_url);
@@ -73,7 +73,7 @@ module.exports = async ({ wav_url }) => {
   const chunks = getChunks(buf);
 
   const sequence = chunks.reduce((acc, curr) => {
-    const button = toneMap.get(curr.toString());
+    const button = toneMap.get(curr.toString()) || '0';
     return acc + button;
   }, '');
 
