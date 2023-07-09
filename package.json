@@ -12,6 +12,7 @@
   "dependencies": {
     "dotenv-cli": "^7.2.1",
     "fft.js": "^4.0.4",
+    "goertzeljs": "^4.2.3",
     "jimp": "^0.22.8",
     "node-fetch": "^2",
     "node-wav": "^0.0.2",
